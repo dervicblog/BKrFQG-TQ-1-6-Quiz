@@ -12,7 +12,7 @@ Das Repository bietet verschiedene HTML-basierte Quiz-Seiten, um Ihr Wissen zu t
 Folgende Quiz-Module stehen zur Verfügung:
 * **Allgemeines Quiz** (`quiz.html`)
 * **Spezifische TQ-Module:**
-    * `quiz2.html` bis `quiz12.html` decken verschiedene Schwerpunkte ab.
+    * `quiz2.html` bis `quiz21.html` decken verschiedene Schwerpunkte ab.
 
 ## 🛠️ Verwendung
 Da es sich um statische HTML-Dateien handelt, können Sie diese direkt im Browser öffnen:

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TQ 1-6 Quiz 7</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            background: #ffffff; margin: 0; padding: 20px; 
+            font-family: 'Caveat', cursive; color: #222; font-size: 24px; 
+        }
+        .blatt { width: 100%; max-width: 800px; margin: 0 auto; padding: 40px; }
+        h2 { border-bottom: 3px solid #000; padding-bottom: 15px; font-size: 36px; margin-bottom: 30px; }
+        .question { font-weight: bold; margin-bottom: 20px; font-size: 28px; }
+        .options { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        button { 
+            background: #f0f0f0; border: 1px solid #333; padding: 10px 20px; 
+            cursor: pointer; font-family: 'Caveat', cursive; font-size: 22px; 
+            border-radius: 8px; text-align: left;
+        }
+        button:hover { background: #e0e0e0; }
+        .correct { background: #d4edda !important; border-color: #28a745 !important; }
+        .incorrect { background: #f8d7da !important; border-color: #d63031 !important; }
+        #feedback { margin-bottom: 20px; padding: 15px; border-radius: 8px; display: none; }
+        #next-btn { background: #333; color: #fff; padding: 10px 25px; border-radius: 8px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="blatt">
+    <h2 id="header">🚛 BKrFQG TQ 1-6 Quiz 7</h2>
+    <div id="quiz-container">
+        <div id="question-text" class="question"></div>
+        <div id="options" class="options"></div>
+        <div id="feedback"></div>
+        <button id="next-btn" style="display:none" onclick="nextQuestion()">Nächste Frage</button>
+    </div>
+</div>
+
+<script>
+const quizData = [
+    { q: "Was ist bei der Benutzung von Schneeketten zu beachten?", a: ["Nur auf einer Achse", "Auf die Antriebsachse montieren", "Nur bei Talfahrt", "Immer an allen Rädern"], c: 1 },
+    { q: "Wie nennt man das 'Aufschwimmen' eines Reifens auf einer Wasserfläche?", a: ["Aquaplaning", "Schleudern", "Übersteuern", "Untersteuern"], c: 0 },
+    { q: "Welches Bauteil verbindet die Zugmaschine mit dem Auflieger (technisch)?", a: ["Königszapfen", "Kardanwelle", "Differenzial", "Nockenwelle"], c: 0 },
+    { q: "Wie oft muss die Fahrerkarte bei einem Kontrollgerät ausgelesen werden (Gesetz)?", a: ["Täglich", "Spätestens alle 28 Tage", "Jedes halbe Jahr", "Nur bei Werkstattbesuch"], c: 1 },
+    { q: "Welche Farbe hat die Warntafel für einen normalen Gefahrguttransport (ohne Zahlen)?", a: ["Weiß", "Blau", "Orange", "Gelb"], c: 2 },
+    { q: "Was ist ein 'CIF' (Incoterm) Geschäft?", a: ["Frei Haus", "Kosten, Versicherung und Fracht", "Ab Werk", "Nur Transportkosten"], c: 1 },
+    { q: "Welche Funktion hat das ABS (Antiblockiersystem)?", a: ["Verhindert Radblockieren beim Bremsen", "Erhöht die Endgeschwindigkeit", "Verkürzt den Bremsweg bei Nässe nicht", "Regelt den Reifendruck"], c: 0 },
+    { q: "Was ist die Ursache für Sekundenschlaf?", a: ["Zu viel Kaffee", "Übermüdung / Schlafdefizit", "Falsche Musik", "Zu langes Sitzen"], c: 1 },
+    { q: "Wie nennt man die Zeit zwischen zwei täglichen Ruhezeiten?", a: ["Arbeitszeit", "Lenkzeit", "Tagesarbeitszeit", "Bereitschaftszeit"], c: 2 },
+    { q: "Was sollte man bei einem Brand im LKW-Führerhaus als Erstes tun?", a: ["Feuerlöscher suchen", "Fahrzeug abstellen, Motor aus, aussteigen", "Weiterfahren bis zur Werkstatt", "Fenster öffnen"], c: 1 }
+];
+
+let currentQ = 0; let score = 0;
+
+function loadQuestion() {
+    const data = quizData[currentQ];
+    document.getElementById('question-text').innerText = (currentQ + 1) + ". " + data.q;
+    const container = document.getElementById('options');
+    container.innerHTML = '';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    data.a.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => check(i);
+        container.appendChild(btn);
+    });
+}
+function check(i) {
+    const d = quizData[currentQ];
+    const btns = document.querySelectorAll('.options button');
+    btns.forEach(b => b.disabled = true);
+    if(i === d.c) {
+        btns[i].classList.add('correct');
+        score++;
+    } else {
+        btns[i].classList.add('incorrect');
+        btns[d.c].classList.add('correct');
+    }
+    document.getElementById('feedback').style.display = 'block';
+    document.getElementById('feedback').innerText = i === d.c ? "Richtig!" : "Falsch.";
+    document.getElementById('next-btn').style.display = 'block';
+}
+function nextQuestion() {
+    currentQ++;
+    if(currentQ < quizData.length) loadQuestion();
+    else document.getElementById('quiz-container').innerHTML = `<h1>Fertig!</h1><p>Punktzahl: ${score} / ${quizData.length}</p>`;
+}
+loadQuestion();
+</script>
+</body>
+</html>

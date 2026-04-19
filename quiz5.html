@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TQ 1-6 Quiz 5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            background: #ffffff; margin: 0; padding: 20px; 
+            font-family: 'Caveat', cursive; color: #222; font-size: 24px; 
+        }
+        .blatt { width: 100%; max-width: 800px; margin: 0 auto; padding: 40px; }
+        h2 { border-bottom: 3px solid #000; padding-bottom: 15px; font-size: 36px; margin-bottom: 30px; }
+        .question { font-weight: bold; margin-bottom: 20px; font-size: 28px; }
+        .options { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        button { 
+            background: #f0f0f0; border: 1px solid #333; padding: 10px 20px; 
+            cursor: pointer; font-family: 'Caveat', cursive; font-size: 22px; 
+            border-radius: 8px; text-align: left;
+        }
+        button:hover { background: #e0e0e0; }
+        .correct { background: #d4edda !important; border-color: #28a745 !important; }
+        .incorrect { background: #f8d7da !important; border-color: #d63031 !important; }
+        #feedback { margin-bottom: 20px; padding: 15px; border-radius: 8px; display: none; }
+        #next-btn { background: #333; color: #fff; padding: 10px 25px; border-radius: 8px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="blatt">
+    <h2 id="header">🚛 BKrFQG TQ 1-6 Quiz 5</h2>
+    <div id="quiz-container">
+        <div id="question-text" class="question"></div>
+        <div id="options" class="options"></div>
+        <div id="feedback"></div>
+        <button id="next-btn" style="display:none" onclick="nextQuestion()">Nächste Frage</button>
+    </div>
+</div>
+
+<script>
+const quizData = [
+    { q: "Wie hoch ist der Reibbeiwert (μ) bei rutschhemmenden Matten (üblicherweise)?", a: ["0,1", "0,4", "0,6", "0,9"], c: 2 },
+    { q: "Was bedeutet das Symbol 'Bett' auf dem Tachographen?", a: ["Arbeitszeit", "Bereitschaftszeit", "Ruhezeit", "Lenkzeit"], c: 2 },
+    { q: "Warum ist das Entwässern der Luftkessel wichtig?", a: ["Um Rost zu vermeiden", "Um Bremsleistung zu verbessern", "Wegen Frostschutz", "Alle Antworten sind richtig"], c: 3 },
+    { q: "Was ist bei einem Tunnelbrand im LKW zu tun?", a: ["Weiterfahren bis Ausgang", "Sofort wenden", "Fahrzeug abstellen, Motor aus, Schlüssel stecken lassen", "Licht ausschalten"], c: 2 },
+    { q: "Welches Fahrverhalten spart Kraftstoff?", a: ["Vorausschauendes Fahren", "Häufiges Bremsen", "Hohe Drehzahlen", "Klimaanlage voll auf"], c: 0 },
+    { q: "Darf der Sicherheitsgurt im LKW abgelegt werden?", a: ["Nur in der Stadt", "Nur beim Rückwärtsfahren", "Nein, Gurtpflicht besteht immer", "Nur wenn man telefoniert"], c: 2 },
+    { q: "Wie nennt man den Austausch von Paletten?", a: ["Palettentausch", "Export", "Import", "Laderaumtausch"], c: 0 },
+    { q: "Was passiert, wenn der Schwerpunkt der Ladung zu hoch liegt?", a: ["Das Fahrzeug wird instabil", "Das Fahrzeug wird schneller", "Der Spritverbrauch sinkt", "Keine Auswirkung"], c: 0 },
+    { q: "Welche Fahrerlaubnisklasse benötigt man für LKW über 3,5t?", a: ["Klasse B", "Klasse C", "Klasse A", "Klasse D"], c: 1 },
+    { q: "Was ist ein 'Eco-Training'?", a: ["Spritspartraining", "Training für Reifen", "Training für ADR", "Fahrtraining im Gelände"], c: 0 }
+];
+
+let currentQ = 0; let score = 0;
+
+function loadQuestion() {
+    const data = quizData[currentQ];
+    document.getElementById('question-text').innerText = (currentQ + 1) + ". " + data.q;
+    const container = document.getElementById('options');
+    container.innerHTML = '';
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    data.a.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => check(i);
+        container.appendChild(btn);
+    });
+}
+function check(i) {
+    const d = quizData[currentQ];
+    const btns = document.querySelectorAll('.options button');
+    btns.forEach(b => b.disabled = true);
+    if(i === d.c) {
+        btns[i].classList.add('correct');
+        score++;
+    } else {
+        btns[i].classList.add('incorrect');
+        btns[d.c].classList.add('correct');
+    }
+    document.getElementById('feedback').style.display = 'block';
+    document.getElementById('feedback').innerText = i === d.c ? "Richtig!" : "Falsch.";
+    document.getElementById('next-btn').style.display = 'block';
+}
+function nextQuestion() {
+    currentQ++;
+    if(currentQ < quizData.length) loadQuestion();
+    else document.getElementById('quiz-container').innerHTML = `<h1>Fertig!</h1><p>Punktzahl: ${score} / ${quizData.length}</p>`;
+}
+loadQuestion();
+</script>
+</body>
+</html>
